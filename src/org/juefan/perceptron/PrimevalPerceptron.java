@@ -1,4 +1,4 @@
-package org.juefan.perceptron;
+ï»¿package org.juefan.perceptron;
 
 
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ public class PrimevalPerceptron {
 	public static ArrayList<Integer> w  = new ArrayList<>();
 	public static int b ;
 	
-	/*³õÊ¼»¯²ÎÊı*/
+	/*åˆå§‹åŒ–å‚æ•°*/
 	public PrimevalPerceptron(){
 		w.add(0);
 		w.add(0);
@@ -16,9 +16,9 @@ public class PrimevalPerceptron {
 	}
 	
 	/**
-	 * ÅĞ¶ÏÊÇ·ñ·ÖÀàÕıÈ·
-	 * @param data ´ıÅĞ¶ÏÊı¾İ
-	 * @return ·µ»ØÅĞ¶ÏÕıÈ·Óë·ñ
+	 * åˆ¤æ–­æ˜¯å¦åˆ†ç±»æ­£ç¡®
+	 * @param data å¾…åˆ¤æ–­æ•°æ®
+	 * @return è¿”å›åˆ¤æ–­æ­£ç¡®ä¸å¦
 	 */
 	public static boolean getValue(Data data){
 		int state = 0;
@@ -46,7 +46,7 @@ public class PrimevalPerceptron {
 		datas.add(new Data(vList3, -1));
 		
 		/**
-		 * Èç¹ûÈ«²¿Êı¾İ¶¼·ÖÀàÕıÈ·Ôò½áÊøµü´ú
+		 * å¦‚æœå…¨éƒ¨æ•°æ®éƒ½åˆ†ç±»æ­£ç¡®åˆ™ç»“æŸè¿­ä»£
 		 */
 		while(!(getValue(datas.get(0)) && getValue(datas.get(1)) && getValue(datas.get(2)))){
 			for(int i = 0; i < 3; i++){
@@ -58,7 +58,7 @@ public class PrimevalPerceptron {
 			}
 		}
 		
-		System.out.println(w + "\t" + b);		//Êä³ö×îÖÕµÄ½á¹û
+		System.out.println(w + "\t" + b);		//è¾“å‡ºæœ€ç»ˆçš„ç»“æœ
 	}
 
 }
