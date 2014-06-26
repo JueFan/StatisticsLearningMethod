@@ -1,4 +1,4 @@
-package org.juefan.perceptron;
+锘縫ackage org.juefan.perceptron;
 
 import java.util.ArrayList;
 
@@ -6,7 +6,7 @@ public class Data {
 	public ArrayList<Integer> x;
 	public int y;
 	
-	/**读取一行数据转化为标准格式*/
+	/**璇诲彇涓�琛屾暟鎹浆鍖栦负鏍囧噯鏍煎紡*/
 	public Data(String content){
 		String[] strings = content.split("\t| |:");
 		ArrayList<Integer> xList = new ArrayList<Integer>();
