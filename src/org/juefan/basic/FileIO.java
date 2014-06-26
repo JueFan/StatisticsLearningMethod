@@ -1,4 +1,4 @@
-package org.juefan.basic;
+ï»¿package org.juefan.basic;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -17,25 +17,25 @@ public class FileIO {
 		fileList = new ArrayList<String>();
 	}
 
-	/**ÉèÖÃÒª¶ÁÈ¡µÄÎÄ¼şµÄÎÄ¼şÂ·¾¶*/
+	/**è®¾ç½®è¦è¯»å–çš„æ–‡ä»¶çš„æ–‡ä»¶è·¯å¾„*/
 	public void setFileName(String fileString){
 		this.fileName = fileString;
 	}
 
-	/**ÉèÖÃÎÄ¼şÂ·¾¶*/
+	/**è®¾ç½®æ–‡ä»¶è·¯å¾„*/
 	public void setPath(String path){
 		this.pathString = path;
 	}
 
-	/**¶ÁÈ¡ÎÄ¼ş¼ĞÄÚµÄËùÓĞÎÄ¼şÃû³Æ*/
+	/**è¯»å–æ–‡ä»¶å¤¹å†…çš„æ‰€æœ‰æ–‡ä»¶åç§°*/
 	public void setFileNameList(){
 		for(File file : new File(pathString).listFiles()){
 			fileNameList.add(file.getAbsolutePath());
 		}
 	}
 
-	/**½«fileListÊı×é¸´ÖÆ³öÀ´
-	 * ²¢½«Ô­ÓĞµÄfileListÇå¿Õ*/
+	/**å°†fileListæ•°ç»„å¤åˆ¶å‡ºæ¥
+	 * å¹¶å°†åŸæœ‰çš„fileListæ¸…ç©º*/
 	public List<String> cloneList(){
 		List<String> tmpList = new ArrayList<String>();
 		tmpList.addAll(fileList);
@@ -43,14 +43,14 @@ public class FileIO {
 		return tmpList;
 	}
 
-	/**¶ÁÈ¡ÎÄ¼şÄÚµÄÊı¾İ²¢´æ´¢ÖÁfileList*/
+	/**è¯»å–æ–‡ä»¶å†…çš„æ•°æ®å¹¶å­˜å‚¨è‡³fileList*/
 	public List<String> FileRead(){
 		return FileRead("gbk");
 	}
 
 	/**
-	 * ¶ÁÈ¡ÎÄ¼şÄÚµÄÊı¾İ
-	 * ½«fileNameÎÄ¼şÄÚµÄÄÚÈİ°´ĞĞ´æ´¢½øfileListÊı×éÖĞ
+	 * è¯»å–æ–‡ä»¶å†…çš„æ•°æ®
+	 * å°†fileNameæ–‡ä»¶å†…çš„å†…å®¹æŒ‰è¡Œå­˜å‚¨è¿›fileListæ•°ç»„ä¸­
 	 */
 	public List<String> FileRead(String code){
 		fileList.clear();
@@ -60,23 +60,23 @@ public class FileIO {
 				fileList.add(fileScanner.nextLine());
 			}
 		}catch (Exception e) {
-			System.err.println("ÎÄ¼ş²»´æÔÚ£¡");
+			System.err.println("æ–‡ä»¶ä¸å­˜åœ¨ï¼");
 		}
 		return fileList;
 	}
 
 
-	/**¶ÁÈ¡ÎÄ¼şÃûÁĞ±íÀïÃæµÄËùÓĞÊı¾İ*/
+	/**è¯»å–æ–‡ä»¶ååˆ—è¡¨é‡Œé¢çš„æ‰€æœ‰æ•°æ®*/
 	public void FileListRead(){
 		FileListRead("gbk");
 	}
 
 	/**
-	 * ¶ÁÈ¡ÎÄ¼şÃûÁĞ±íÀïÃæµÄËùÓĞÊı¾İ
-	 * @param code	ÎÄ¼ş±àÂë¸ñÊ½
+	 * è¯»å–æ–‡ä»¶ååˆ—è¡¨é‡Œé¢çš„æ‰€æœ‰æ•°æ®
+	 * @param code	æ–‡ä»¶ç¼–ç æ ¼å¼
 	 */
 	public void FileListRead(String code){
-		System.out.println("½øÈëÎÄ¼ş¶ÁÈ¡³ÌĞò......");
+		System.out.println("è¿›å…¥æ–‡ä»¶è¯»å–ç¨‹åº......");
 		try{
 			for(String file: fileNameList){
 				if(new File(file).exists()){
@@ -87,19 +87,19 @@ public class FileIO {
 				}
 			}
 		}catch (Exception e) {
-			System.out.println("ÎÄ¼ş²»´æÔÚ!");
+			System.out.println("æ–‡ä»¶ä¸å­˜åœ¨!");
 		}
-		System.out.println("¹²ÓĞ " + fileNameList.size() + " ¸öÎÄ¼ş");
+		System.out.println("å…±æœ‰ " + fileNameList.size() + " ä¸ªæ–‡ä»¶");
 	}
 
 
 
 	/**
-	 * ½«Ö¸¶¨ÄÚÈİĞ´ÈëÖ¸¶¨ÎÄ¼şÖĞ
-	 * ÒÔ×·¼ÓµÄ·½Ê½Ğ´Èë
-	 * @param fileWriter  ÎÄ¼şÂ·¾¶
-	 * @param context  ´æ´¢ÄÚÈİ
-	 * @param bool ÊÇ·ñ×·¼ÓĞ´Èë
+	 * å°†æŒ‡å®šå†…å®¹å†™å…¥æŒ‡å®šæ–‡ä»¶ä¸­
+	 * ä»¥è¿½åŠ çš„æ–¹å¼å†™å…¥
+	 * @param fileWriter  æ–‡ä»¶è·¯å¾„
+	 * @param context  å­˜å‚¨å†…å®¹
+	 * @param bool æ˜¯å¦è¿½åŠ å†™å…¥
 	 */
 	public static void FileWrite(String fileName, String context, boolean bool){
 		try{
@@ -111,10 +111,10 @@ public class FileIO {
 	}
 
 	/**
-	 * ½«Ö¸¶¨ÄÚÈİĞ´ÈëÖ¸¶¨ÎÄ¼şÖĞ
-	 * ÒÔ×·¼ÓµÄ·½Ê½Ğ´Èë
-	 * @param fileWriter  ÎÄ¼şÂ·¾¶
-	 * @param context  ´æ´¢ÄÚÈİ
+	 * å°†æŒ‡å®šå†…å®¹å†™å…¥æŒ‡å®šæ–‡ä»¶ä¸­
+	 * ä»¥è¿½åŠ çš„æ–¹å¼å†™å…¥
+	 * @param fileWriter  æ–‡ä»¶è·¯å¾„
+	 * @param context  å­˜å‚¨å†…å®¹
 	 */
 	public static void FileWrite(String fileName, String context){
 		try{
@@ -126,10 +126,10 @@ public class FileIO {
 	}
 
 	/** 
-	 * @param path ÎÄ¼şÂ·¾¶ 
-	 * @param suffix ºó×ºÃû 
-	 * @param isdepth ÊÇ·ñ±éÀú×ÓÄ¿Â¼ 
-	 * @return Âú×ãÒªÇóµÄÎÄ¼şÂ·¾¶ÃûÁĞ±í
+	 * @param path æ–‡ä»¶è·¯å¾„ 
+	 * @param suffix åç¼€å 
+	 * @param isdepth æ˜¯å¦éå†å­ç›®å½• 
+	 * @return æ»¡è¶³è¦æ±‚çš„æ–‡ä»¶è·¯å¾„ååˆ—è¡¨
 	 */ 
 	public static List<String> getListFiles(String path, String suffix, boolean isdepth) { 
 		File file = new File(path); 
@@ -146,13 +146,13 @@ public class FileIO {
 	}
 
 	/** 
-	 * ¶ÁÈ¡Ä¿Â¼¼°×ÓÄ¿Â¼ÏÂÖ¸¶¨ÎÄ¼şÃûµÄÂ·¾¶ ²¢·Åµ½Ò»¸öÊı×éÀïÃæ·µ»Ø±éÀú 
+	 * è¯»å–ç›®å½•åŠå­ç›®å½•ä¸‹æŒ‡å®šæ–‡ä»¶åçš„è·¯å¾„ å¹¶æ”¾åˆ°ä¸€ä¸ªæ•°ç»„é‡Œé¢è¿”å›éå† 
 	 * @author juefan
 	 */ 
 	public static List<String> listFile(File f, String suffix, boolean isdepth) { 
-		//ÊÇÄ¿Â¼£¬Í¬Ê±ĞèÒª±éÀú×ÓÄ¿Â¼ 
+		//æ˜¯ç›®å½•ï¼ŒåŒæ—¶éœ€è¦éå†å­ç›®å½• 
 		if (f.isDirectory() && isdepth == true) { 
-			//listFiles()ÊÇ·µ»ØÄ¿Â¼ÏÂµÄÎÄ¼şÂ·¾¶¼¯ºÏ
+			//listFiles()æ˜¯è¿”å›ç›®å½•ä¸‹çš„æ–‡ä»¶è·¯å¾„é›†åˆ
 			File[] t = f.listFiles(); 
 			for (int i = 0; i < t.length; i++) {
 				listFile(t[i], suffix, isdepth); 
@@ -164,13 +164,13 @@ public class FileIO {
 				fileNameList.add(filePath); 
 			} 
 			else { 
-				//×îºóÒ»¸ö.(¼´ºó×ºÃûÇ°ÃæµÄ.)µÄË÷Òı
+				//æœ€åä¸€ä¸ª.(å³åç¼€åå‰é¢çš„.)çš„ç´¢å¼•
 				int begIndex = filePath.lastIndexOf("."); 
-				//System.out.println("Ë÷ÒıÎª :"+begIndex);
+				//System.out.println("ç´¢å¼•ä¸º :"+begIndex);
 				String tempsuffix = ""; 
-				//·ÀÖ¹ÊÇÎÄ¼şµ«È´Ã»ÓĞºó×ºÃû½áÊøµÄÎÄ¼ş
+				//é˜²æ­¢æ˜¯æ–‡ä»¶ä½†å´æ²¡æœ‰åç¼€åç»“æŸçš„æ–‡ä»¶
 				if(begIndex != -1){  
-					//tempsuffixÈ¡ÎÄ¼şµÄºó×º
+					//tempsuffixå–æ–‡ä»¶çš„åç¼€
 					tempsuffix = filePath.substring(begIndex + 1, filePath.length()); 
 				} 
 				if(tempsuffix.equals(suffix)) { 
