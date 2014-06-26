@@ -92,8 +92,6 @@ public class FileIO {
 		System.out.println("共有 " + fileNameList.size() + " 个文件");
 	}
 
-
-
 	/**
 	 * 将指定内容写入指定文件中
 	 * 以追加的方式写入

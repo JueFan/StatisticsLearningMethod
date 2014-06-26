@@ -12,9 +12,9 @@ public class PrimevalPerceptron {
 	
 	/*初始化参数*/
 	public PrimevalPerceptron(){
-		w.add(0);
-		w.add(0);
-		b = 0;
+		w.add(5);
+		w.add(-2);
+		b = 3;
 	}
 	
 	/**
@@ -31,6 +31,7 @@ public class PrimevalPerceptron {
 		return state * data.y > 0? true: false;	
 	}
 	
+	//此算法基于数据是线性可分的，如果线性不可分，则会进入死循环
 	public static boolean isStop(ArrayList<Data> datas){
 		boolean isStop = true;
 		for(Data data: datas){
@@ -54,10 +55,11 @@ public class PrimevalPerceptron {
 		 */
 		while(!isStop(datas)){
 			for(int i = 0; i < datas.size(); i++){
-				if(!getValue(datas.get(i))){
-					for(int j = 0; j < 2; j++)
+				if(!getValue(datas.get(i))){  //这里面可以理解为是一个简单的梯度下降法
+					for(int j = 0; j < datas.get(i).x.size(); j++)
 					w.set(j, w.get(j) + datas.get(i).y * datas.get(i).x.get(j));
 					b += datas.get(i).y;
+					System.out.println(w + "\t" + b);
 				}
 			}
 		}	
