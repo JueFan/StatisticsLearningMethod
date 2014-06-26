@@ -3,6 +3,8 @@
 
 import java.util.ArrayList;
 
+import org.juefan.basic.FileIO;
+
 public class PrimevalPerceptron {
 	
 	public static ArrayList<Integer> w  = new ArrayList<>();
@@ -29,36 +31,36 @@ public class PrimevalPerceptron {
 		return state * data.y > 0? true: false;	
 	}
 	
+	public static boolean isStop(ArrayList<Data> datas){
+		boolean isStop = true;
+		for(Data data: datas){
+			isStop = isStop && getValue(data);
+		}
+		return isStop;
+	}
+	
 	public static void main(String[] args) {
 		PrimevalPerceptron model = new PrimevalPerceptron();
 		ArrayList<Data> datas = new ArrayList<>();
-		ArrayList<Integer> vList1 = new ArrayList<>();
-		vList1.add(3);
-		vList1.add(3);
-		datas.add(new Data(vList1, 1));
-		ArrayList<Integer> vList2 = new ArrayList<>();
-		vList2.add(4);
-		vList2.add(3);
-		datas.add(new Data(vList2, 1));
-		ArrayList<Integer> vList3 = new ArrayList<>();
-		vList3.add(1);
-		vList3.add(1);
-		datas.add(new Data(vList3, -1));
-		
+		FileIO fileIO = new FileIO();
+		fileIO.setFileName(".//file//perceptron.txt");
+		fileIO.FileRead();
+		for(String data: fileIO.fileList){
+			datas.add(new Data(data));
+		}
+	
 		/**
 		 * 如果全部数据都分类正确则结束迭代
 		 */
-		while(!(getValue(datas.get(0)) && getValue(datas.get(1)) && getValue(datas.get(2)))){
-			for(int i = 0; i < 3; i++){
+		while(!isStop(datas)){
+			for(int i = 0; i < datas.size(); i++){
 				if(!getValue(datas.get(i))){
 					for(int j = 0; j < 2; j++)
 					w.set(j, w.get(j) + datas.get(i).y * datas.get(i).x.get(j));
 					b += datas.get(i).y;
 				}
 			}
-		}
-		
+		}	
 		System.out.println(w + "\t" + b);		//输出最终的结果
 	}
-
 }
