@@ -17,4 +17,15 @@ public class Data {
 		this.x = xList;
 		this.y = Integer.parseInt(strings[0]);
 	}
+	
+	/**返回俩个点的内积*/
+	public static int getInner(Data a, Data b){
+		if(a.x.size() != b.x.size())
+			return 0;
+		int inner = 0;
+		for(int i = 0; i < a.x.size(); i++){
+			inner += a.x.get(i) * b.x.get(i);
+		}
+		return inner;
+	}
 }
