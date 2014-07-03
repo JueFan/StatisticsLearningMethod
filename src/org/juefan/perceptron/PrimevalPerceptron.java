@@ -4,6 +4,7 @@
 import java.util.ArrayList;
 
 import org.juefan.basic.FileIO;
+import org.juefan.data.Data;
 
 public class PrimevalPerceptron {
 	

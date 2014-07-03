@@ -1,4 +1,4 @@
-﻿package org.juefan.perceptron;
+﻿package org.juefan.data;
 
 import java.util.ArrayList;
 
@@ -16,6 +16,11 @@ public class Data {
 		this.x = new ArrayList<>();
 		this.x = xList;
 		this.y = Integer.parseInt(strings[0]);
+	}
+	
+	public Data(){
+		x  = new ArrayList<>();
+		y = 0;
 	}
 	
 	/**返回俩个点的内积*/
