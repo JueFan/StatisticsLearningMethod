@@ -39,9 +39,9 @@ public class SimpleKnn {
 	public double getLdistance(Data a, Data b){
 		if(a.x.size() != b.x.size())
 			return Double.MAX_VALUE;
-		double inner = 0;
+		double inner = 0D;
 		for(int i = 0; i < P; i++){
-			inner += Math.pow((a.x.get(i) - b.x.get(i)) , P);
+			inner += Math.pow(Double.valueOf(a.x.get(i).toString()) - Double.valueOf(b.x.get(i).toString())  , P);
 		}
 		return Math.pow(inner, (double)1/P);	
 	}

@@ -3,15 +3,15 @@
 import java.util.ArrayList;
 
 public class Data {
-	public ArrayList<Integer> x;
+	public ArrayList<Object> x;
 	public int y;
 	
 	/**读取一行数据转化为标准格式*/
 	public Data(String content){
 		String[] strings = content.split("\t| |:");
-		ArrayList<Integer> xList = new ArrayList<Integer>();
+		ArrayList<Object> xList = new ArrayList<Object>();
 		for(int i = 1; i < strings.length; i++){
-			xList.add(Integer.parseInt(strings[i]));
+			xList.add(Double.parseDouble(strings[i]));
 		}
 		this.x = new ArrayList<>();
 		this.x = xList;
@@ -24,12 +24,12 @@ public class Data {
 	}
 	
 	/**返回俩个点的内积*/
-	public static int getInner(Data a, Data b){
+	public static double getInner(Data a, Data b){
 		if(a.x.size() != b.x.size())
 			return 0;
-		int inner = 0;
+		double inner = 0;
 		for(int i = 0; i < a.x.size(); i++){
-			inner += a.x.get(i) * b.x.get(i);
+			inner += (double)a.x.get(i) * (double)b.x.get(i);
 		}
 		return inner;
 	}

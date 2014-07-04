@@ -52,6 +52,7 @@ public class FileIO {
 	 * 读取文件内的数据
 	 * 将fileName文件内的内容按行存储进fileList数组中
 	 */
+	@SuppressWarnings("resource")
 	public List<String> FileRead(String code){
 		fileList.clear();
 		try{
@@ -75,6 +76,7 @@ public class FileIO {
 	 * 读取文件名列表里面的所有数据
 	 * @param code	文件编码格式
 	 */
+	@SuppressWarnings("resource")
 	public void FileListRead(String code){
 		System.out.println("进入文件读取程序......");
 		try{
@@ -99,6 +101,7 @@ public class FileIO {
 	 * @param context  存储内容
 	 * @param bool 是否追加写入
 	 */
+	@SuppressWarnings("resource")
 	public static void FileWrite(String fileName, String context, boolean bool){
 		try{
 			FileWriter fileWriter = new FileWriter(fileName, bool);
@@ -114,6 +117,7 @@ public class FileIO {
 	 * @param fileWriter  文件路径
 	 * @param context  存储内容
 	 */
+	@SuppressWarnings("resource")
 	public static void FileWrite(String fileName, String context){
 		try{
 			FileWriter fileWriter = new FileWriter(fileName, true);

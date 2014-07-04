@@ -14,10 +14,10 @@ public class GramPerceptrom {
 		b = 0;
 	}
 	/**Gram矩阵*/
-	public static ArrayList<ArrayList<Integer>> gram = new ArrayList<>();
+	public static ArrayList<ArrayList<Object>> gram = new ArrayList<>();
 	public void setGram(ArrayList<Data> datas){
 		for(int i = 0; i < datas.size(); i++){
-			ArrayList<Integer> rowGram = new ArrayList<>();
+			ArrayList<Object> rowGram = new ArrayList<>();
 			for(int j = 0; j < datas.size(); j++){
 				rowGram.add(Data.getInner(datas.get(i), datas.get(j)));
 			}
@@ -27,9 +27,9 @@ public class GramPerceptrom {
 	
 	/**是否正确分类*/
 	public static boolean isCorrect(int i, ArrayList<Data> datas){
-		int value = 0;
+		double value = 0;
 		for(int j = 0; j < datas.size(); j++)
-			value += a.get(j)*datas.get(j).y * gram.get(j).get(i);
+			value += a.get(j)*datas.get(j).y * (double)gram.get(j).get(i);
 		value = datas.get(i).y * (value + b);
 		return value > 0 ? true: false;
 	}
