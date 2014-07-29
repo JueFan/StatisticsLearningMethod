@@ -2,105 +2,153 @@ package org.juefan.decisiontree;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.juefan.basic.FileIO;
 import org.juefan.bayes.Data;
 
 public class DecisionTree {
+	public static final double e = 0.1;
+	public InfoGain infoGain = new InfoGain();
 	
-	//返回底数为2的对数值
-	public static double log2(double d){
-		return Math.log(d)/Math.log(2);
+	public TreeNode buildTree(ArrayList<Data> datas, ArrayList<String> featureName){
+		TreeNode treeNode = new TreeNode();
+		ArrayList<String> feaName = new ArrayList<>();
+		feaName = featureName;
+		if(isSingle(datas) || getMaxInfoGain(datas) < e){
+			treeNode.setNodeName(getLabel(datas).toString());
+			System.out.println("类型为：" + treeNode.getNodeName());
+			return treeNode;
+		}else  {
+			int feature = getMaxInfoGainFeature(datas);
+			System.out.println("第" + (feature + 1) + "个特征");
+			treeNode.setAttributeValue(feaName.get(feature + 1));
+			System.out.println("特征为：" + feaName.get(feature + 1));
+			ArrayList<String> tList = new ArrayList<>();
+			tList = feaName;
+			tList.remove(feature + 1);
+			System.out.println("剩余特征数：" + feaName.size());
+			System.out.println("tList: " + tList.size());
+			Map<Object, ArrayList<Data>> tMap = new HashMap<>();
+			for(Data data: datas){
+				if(tMap.containsKey(data.x.get(feature))){
+					Data tData = new Data();
+					for(int i = 0; i < data.x.size(); i++)
+						if(i != feature)
+							tData.x.add(data.x.get(i));
+					tData.y = data.y;
+					tMap.get(data.x.get(feature)).add(tData);
+				}else {
+					Data tData = new Data();
+					for(int i = 0; i < data.x.size(); i++)
+						if(i != feature)
+							tData.x.add(data.x.get(i));
+					tData.y = data.y;
+					ArrayList<Data> tDatas = new ArrayList<>();
+					tDatas.add(tData);
+					tMap.put(data.x.get(feature),tDatas);
+				}
+			}
+			List<TreeNode> treeNodes = new ArrayList<>();
+			int child = 0;
+			for(Object key: tMap.keySet()){
+				System.out.println("特征值为：" + key.toString());	
+				ArrayList<String> tList2 = new ArrayList<>();
+				tList2 = tList;
+				System.out.println("tList2: " + tList2.size());
+				treeNodes.add(buildTree(tMap.get(key), tList2));
+				treeNodes.get(child ++).setTargetFunValue(key.toString());
+			}
+			treeNode.setChildTreeNode(treeNodes);
+			feaName.remove(feature + 1);
+		}	
+		return treeNode;
 	}
 	
 	/**
-	 * 计算经验熵
-	 * @param datas 当前数据集，可以为训练数据集中的子集
-	 * @return 返回当前数据集的经验熵
+	 * 获取实例中的最大类
+	 * @param datas 实例集
+	 * @return 出现次数最多的类
 	 */
-	public  double getEntropy(ArrayList<Data> datas){
-		int counts = datas.size();
-		double entropy = 0;
-		Map<Object, Double> map = new HashMap<Object, Double>();
+	public Object getLabel(ArrayList<Data> datas){
+		Map<Object, Integer> map = new HashMap<Object, Integer>();
+		Object label = null;
+		int max = 0;
 		for(Data data: datas){
 			if(map.containsKey(data.y)){
 				map.put(data.y, map.get(data.y) + 1);
+				if(map.get(data.y) > max){
+					max = map.get(data.y);
+					label = data.y;
+				}
 			}else {
-				map.put(data.y, 1D);
+				map.put(data.y, 1);
 			}
 		}
-		
-		for(double v: map.values())
-			entropy -= (v/counts * log2(v/counts));
-		System.out.println("经验熵为：" + entropy);
-		return entropy;
-	}
-
-	/**
-	 * 计算条件熵
-	 * @param datas 当前数据集，可以为训练数据集中的子集
-	 * @param feature 待计算的特征位置
-	 * @return 第feature个特征的条件熵
-	 */
-	public double getCondiEntropy(ArrayList<Data> datas, int feature){
-		int counts = datas.size();
-		double condiEntropy = 0;
-		Map<Object, ArrayList<Data>> tmMap = new HashMap<>();
-		for(Data data: datas){
-			if(tmMap.containsKey(data.x.get(feature))){
-				tmMap.get(data.x.get(feature)).add(data);
-			}else {
-				ArrayList<Data> tmDatas = new ArrayList<>();
-				tmDatas.add(data);
-				tmMap.put(data.x.get(feature), tmDatas);
-			}
-		}
-		
-		for(ArrayList<Data> datas2: tmMap.values()){
-			System.out.println("数据集为：");
-			for(Data data: datas2)
-				System.out.println(data.toString());
-			condiEntropy += (double)datas2.size()/counts * getEntropy(datas2);
-		}
-		System.out.println("条件熵为：" + condiEntropy);
-		return condiEntropy;
+		return label;
 	}
 	
 	/**
-	 * 计算信息增益（ID3算法）
-	 * @param datas 当前数据集，可以为训练数据集中的子集
-	 * @param feature 待计算的特征位置
-	 * @return 第feature个特征的信息增益
+	 * 计算信息增益（率）的最大值
+	 * @param datas
+	 * @return 最大的信息增益值
 	 */
-	public double getInfoGain(ArrayList<Data> datas, int feature){
-		return getEntropy(datas) - getCondiEntropy(datas, feature);
+	public double getMaxInfoGain(ArrayList<Data> datas){
+		double max = 0;
+		for(int i = 0; i < datas.get(0).x.size(); i++){
+			double temp = infoGain.getInfoGain(datas, i);
+			if(temp > max)
+				max = temp;
+		}
+		return max;
 	}
 	
-	/**
-	 * 计算信息增益率（C4.5算法）
-	 * @param datas 当前数据集，可以为训练数据集中的子集
-	 * @param feature 待计算的特征位置
-	 * @return 第feature个特征的信息增益率
-	 */
-	public double getInfoGainRatio(ArrayList<Data> datas, int feature){
-		return getInfoGain(datas, feature)/getEntropy(datas);
+	/**信息增益最大的特征*/
+	public int getMaxInfoGainFeature(ArrayList<Data> datas){
+		double max = 0;
+		int feature = 0;
+		//System.out.println("特征长度为：" + datas.get(0).x.size());
+		for(Data data: datas)
+			System.out.println("当前实例：" + data.toString());
+		for(int i = 0; i < datas.get(0).x.size(); i++){
+			double temp = infoGain.getInfoGain(datas, i);
+			if(temp > max){
+				max = temp;
+				feature = i;
+			}
+		}
+		return feature;
 	}
+	
+	/**判断是否只有一类*/
+	public boolean isSingle(ArrayList<Data> datas){
+		Set<Object> set = new HashSet<>();
+		for(Data data: datas)
+			set.add(data.y);
+		return set.size() == 1? true:false;
+	}
+	
 	
 	public static void main(String[] args) {
 		ArrayList<Data> datas = new ArrayList<>();
 		FileIO fileIO = new FileIO();
-		DecisionTree tree = new DecisionTree();
-		fileIO.setFileName(".//file//decision.tree.txt");
-		fileIO.FileRead();
-		for(String data: fileIO.fileList){
-			datas.add(new Data(data));
+		InfoGain tree = new InfoGain();
+		DecisionTree decisionTree = new DecisionTree();
+		fileIO.setFileName(".//file//decision.tree2.txt");
+		fileIO.FileRead("utf-8");
+		ArrayList<String> featureName = new ArrayList<>();
+		for(String string: fileIO.fileList.get(0).split("\t"))
+			featureName.add(string);
+		for(int i = 1; i < fileIO.fileList.size(); i++){
+			datas.add(new Data(fileIO.fileList.get(i)));
 		}
-		for(int i = 0; i < 4; i++){
-			System.out.println("第" + i + "个特征的信息增益为：" + tree.getInfoGain(datas, i));
-		}
+		TreeNode treeNode = new TreeNode();
+		treeNode = decisionTree.buildTree(datas, featureName);
+		treeNode.printTree();
 	}
 	
-	
-	
+
 }
