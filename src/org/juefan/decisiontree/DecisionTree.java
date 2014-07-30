@@ -125,7 +125,6 @@ public class DecisionTree {
 	public static void main(String[] args) {
 		ArrayList<Data> datas = new ArrayList<>();
 		FileIO fileIO = new FileIO();
-		InfoGain tree = new InfoGain();
 		DecisionTree decisionTree = new DecisionTree();
 		fileIO.setFileName(".//file//decision.tree2.txt");
 		fileIO.FileRead("utf-8");
