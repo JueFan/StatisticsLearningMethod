@@ -25,13 +25,15 @@ public class TreeNode {
     public void printTree(){
     	if(targetFunValue != null)
     		System.out.print("特征值: " + targetFunValue + "\t");
-    	if(feature != null)
-    		System.out.print("特征: " + feature + "\t");
+    	/*if(feature != null)
+    		System.out.print("\n特征: " + feature + "\t");*/
     	if(nodeName != null)
     		System.out.print("类型: " + nodeName + "\t");
     	System.out.println();
-    	for(TreeNode treeNode: childTreeNode)
+    	for(TreeNode treeNode: childTreeNode){
+    		System.out.println("当前特征为：" + feature);
     		treeNode.printTree();
+    	}
     }
     public String getAttributeValue() {
         return feature;

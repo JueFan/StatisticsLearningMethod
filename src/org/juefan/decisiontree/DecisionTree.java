@@ -20,18 +20,12 @@ public class DecisionTree {
 		feaName = featureName;
 		if(isSingle(datas) || getMaxInfoGain(datas) < e){
 			treeNode.setNodeName(getLabel(datas).toString());
-			System.out.println("类型为：" + treeNode.getNodeName());
 			return treeNode;
 		}else  {
 			int feature = getMaxInfoGainFeature(datas);
-			System.out.println("第" + (feature + 1) + "个特征");
 			treeNode.setAttributeValue(feaName.get(feature + 1));
-			System.out.println("特征为：" + feaName.get(feature + 1));
 			ArrayList<String> tList = new ArrayList<>();
 			tList = feaName;
-			tList.remove(feature + 1);
-			System.out.println("剩余特征数：" + feaName.size());
-			System.out.println("tList: " + tList.size());
 			Map<Object, ArrayList<Data>> tMap = new HashMap<>();
 			for(Data data: datas){
 				if(tMap.containsKey(data.x.get(feature))){
@@ -55,10 +49,9 @@ public class DecisionTree {
 			List<TreeNode> treeNodes = new ArrayList<>();
 			int child = 0;
 			for(Object key: tMap.keySet()){
-				System.out.println("特征值为：" + key.toString());	
-				ArrayList<String> tList2 = new ArrayList<>();
-				tList2 = tList;
-				System.out.println("tList2: " + tList2.size());
+				//这一步太坑爹了，java的拷背坑真多啊，害我浪费了半天的时间
+				ArrayList<String> tList2 = new ArrayList<>(tList);
+				tList2.remove(feature + 1);
 				treeNodes.add(buildTree(tMap.get(key), tList2));
 				treeNodes.get(child ++).setTargetFunValue(key.toString());
 			}
@@ -110,9 +103,6 @@ public class DecisionTree {
 	public int getMaxInfoGainFeature(ArrayList<Data> datas){
 		double max = 0;
 		int feature = 0;
-		//System.out.println("特征长度为：" + datas.get(0).x.size());
-		for(Data data: datas)
-			System.out.println("当前实例：" + data.toString());
 		for(int i = 0; i < datas.get(0).x.size(); i++){
 			double temp = infoGain.getInfoGain(datas, i);
 			if(temp > max){
@@ -140,6 +130,7 @@ public class DecisionTree {
 		fileIO.setFileName(".//file//decision.tree2.txt");
 		fileIO.FileRead("utf-8");
 		ArrayList<String> featureName = new ArrayList<>();
+		//获取文件的标头
 		for(String string: fileIO.fileList.get(0).split("\t"))
 			featureName.add(string);
 		for(int i = 1; i < fileIO.fileList.size(); i++){

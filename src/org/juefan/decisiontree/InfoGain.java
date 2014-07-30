@@ -33,7 +33,6 @@ public class InfoGain {
 		
 		for(double v: map.values())
 			entropy -= (v/counts * log2(v/counts));
-		//System.out.println("经验熵为：" + entropy);
 		return entropy;
 	}
 
@@ -55,15 +54,10 @@ public class InfoGain {
 				tmDatas.add(data);
 				tmMap.put(data.x.get(feature), tmDatas);
 			}
-		}
-		
+		}		
 		for(ArrayList<Data> datas2: tmMap.values()){
-			/*System.out.println("数据集为：");
-			for(Data data: datas2)
-				System.out.println(data.toString());*/
 			condiEntropy += (double)datas2.size()/counts * getEntropy(datas2);
 		}
-		//System.out.println("条件熵为：" + condiEntropy);
 		return condiEntropy;
 	}
 	

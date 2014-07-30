@@ -52,7 +52,7 @@ public class SimpleKnn {
 	 * @param tran 训练集
 	 * @return 实例的判断结果
 	 */
-	public int getLabelvalue(Data d, ArrayList<Data> tran){
+	public int getLabelValue(Data d, ArrayList<Data> tran){
 		ArrayList<LabelDistance> labelDistances= new ArrayList<>();
 		Map<Integer, Integer> map = new HashMap<>();
 		int label = 0;
@@ -90,6 +90,6 @@ public class SimpleKnn {
 		}
 		Data data = new Data();
 		data.x.add(2); data.x.add(1);
-		System.out.println(knn.getLabelvalue(data, datas));
+		System.out.println(knn.getLabelValue(data, datas));
 	}
 }
