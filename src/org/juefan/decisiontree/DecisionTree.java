@@ -126,7 +126,7 @@ public class DecisionTree {
 		ArrayList<Data> datas = new ArrayList<>();
 		FileIO fileIO = new FileIO();
 		DecisionTree decisionTree = new DecisionTree();
-		fileIO.setFileName(".//file//decision.tree2.txt");
+		fileIO.setFileName(".//file//decision.tree.txt");
 		fileIO.FileRead("utf-8");
 		ArrayList<String> featureName = new ArrayList<>();
 		//获取文件的标头
