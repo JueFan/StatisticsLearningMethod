@@ -1,17 +1,18 @@
 package org.juefan.svm;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
+import java.util.Set;
 
 import org.juefan.basic.FileIO;
 
 public class Data {
 	public Object label;
 	public Map<Integer, Object> vector = new LinkedHashMap<Integer, Object>();
+	public static Set<Integer> dim = new HashSet<>();
 
 	public Data(String line){
 		String[] lines = line.split("\t");
@@ -19,6 +20,7 @@ public class Data {
 		for(int i = 1; i < lines.length; i++){
 			String[] vec = lines[i].split(":");
 			vector.put(Integer.parseInt(vec[0]), vec[1]);
+			dim.add(Integer.parseInt(vec[0]));
 		}
 	}
 	
