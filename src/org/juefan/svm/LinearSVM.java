@@ -10,15 +10,15 @@ import java.util.StringTokenizer;
 import org.juefan.basic.FileIO;
 
 public class LinearSVM {
-	private int exampleNum;
-	private int exampleDim;
-	private double[] w;
+	private int exampleNum;	//数据总量
+	private int exampleDim;	//维度
+	private double[] w;	//权向量
 	private double lambda;
 	private double lr = 0.001;//0.00001
 	private double threshold = 0.001;
-	private double cost;
+	private double cost;	//分类错误情况
 	private double[] grad;
-	private double[] yp;
+	private double[] yp; //分类的值
 	public LinearSVM(double paramLambda){
 
 		lambda = paramLambda;	
@@ -80,6 +80,45 @@ public class LinearSVM {
 			
 		}
 	}
+	
+	@SuppressWarnings("unused")
+	private void CostAndGrads(List<Data> datas){
+		cost =0;
+		//计算分类错误情况
+		for(int m=0;m<exampleNum;m++)
+		{
+			yp[m]=0;
+			for(int d=0;d<exampleDim;d++)
+			{
+				yp[m] += Double.parseDouble(datas.get(m).vector.get(d).toString())*w[d];
+			}
+			
+			if(Double.parseDouble(datas.get(m).label.toString())*yp[m]-1<0)
+			{
+				cost += (1-Double.parseDouble(datas.get(m).label.toString())*yp[m]);
+			}
+		}
+		
+		//结构风险
+		for(int d=0;d<exampleDim;d++)
+		{
+			cost += 0.5*lambda*w[d]*w[d];
+		}
+		
+		//不知道是什么东西
+		for(int d=0;d<exampleDim;d++)
+		{
+			grad[d] = Math.abs(lambda*w[d]);	
+			for(int m=0;m<exampleNum;m++)
+			{
+				if(Double.parseDouble(datas.get(m).label.toString())*yp[m]-1<0)
+				{
+					grad[d]-= Double.parseDouble(datas.get(m).label.toString())*Double.parseDouble(datas.get(m).vector.get(d).toString());
+				}
+			}
+		}	
+	}
+	
 	
 	public void Train(double[][] X,double[] y,int maxIters)
 	{
