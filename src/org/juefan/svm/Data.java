@@ -12,11 +12,14 @@ import org.juefan.basic.FileIO;
 public class Data {
 	public Object label;
 	public Map<Integer, Object> vector = new LinkedHashMap<Integer, Object>();
+
 	public static Set<Integer> dim = new HashSet<>();
 
 	public Data(String line){
-		String[] lines = line.split("\t");
+		String[] lines = line.split("\t| ");
 		label = lines[0];
+		vector.put(0, 1);
+		dim.add(0);
 		for(int i = 1; i < lines.length; i++){
 			String[] vec = lines[i].split(":");
 			vector.put(Integer.parseInt(vec[0]), vec[1]);
