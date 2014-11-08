@@ -7,21 +7,30 @@ import java.util.List;
 import org.juefan.basic.FileIO;
 
 public class LinearSVM {
-	private int exampleNum;	//数据总量
-	private int exampleDim;	//维度
-	private double[] w;	//权向量
+	/**数据总量*/
+	private int exampleNum;	
+	/**维度*/
+	private int exampleDim;	
+	/**权向量*/
+	private double[] w;	
+	/**惩罚参数*/
 	private double lambda;
+	/**梯度下降率*/
 	private double lr = 0.001;//0.00001
+	/**停止条件*/
 	private double threshold = 0.001;
-	private double cost;	//分类错误情况
+	/**分类错误情况*/
+	private double cost;	
+	/**临时权向量*/
 	private double[] grad;
-	private double[] yp; //分类的值
+	/**分类的值*/
+	private double[] yp; 
 	
 	public LinearSVM(double paramLambda){
 		lambda = paramLambda;		
 	}
 		
-	/*参数更新*/
+	/**参数更新*/
 	private void update(){
 		for(int d=0;d<exampleDim;d++){
 			w[d] -= lr*grad[d];
@@ -37,18 +46,17 @@ public class LinearSVM {
 		exampleNum = datas.size();
 		exampleDim = Data.dim.size();
 		System.out.println("数据量：" + exampleNum + "\t数据维度：" + exampleDim);
-		w = new double[exampleDim];
+		w = new double[exampleDim]; 
 		grad = new double[exampleDim];
 		yp = new double[exampleNum];
 		
 		for(int i = 0; i < iterator; i++){
 			CostAndGrad(datas);
-			if(i % 10 == 0)
+			if(i % 50 == 0)
 			System.out.println("cost:"+cost);
 			if(cost< threshold){
 				break;
 			}
-			update();
 		}
 	}
 	
@@ -62,12 +70,14 @@ public class LinearSVM {
 		for(int m=0;m<exampleNum;m++){
 			yp[m]=0;
 			for(int d=0;d<exampleDim;d++){
+				//样本是否包含当前维度值
 				if(datas.get(m).vector.containsKey(d))
 				yp[m] += Double.parseDouble(datas.get(m).vector.get(d).toString())*w[d];
 			}
-			
-			if(Double.parseDouble(datas.get(m).label.toString())*yp[m]-1<0){
-				cost += (1-Double.parseDouble(datas.get(m).label.toString())*yp[m]);
+			double ryp = Double.parseDouble(datas.get(m).label.toString());
+			//合页损失函数
+			if(ryp*yp[m]-1<0){
+				cost += (1-ryp*yp[m]);
 			}
 		}
 		
@@ -76,16 +86,18 @@ public class LinearSVM {
 			cost += 0.5*lambda*w[d]*w[d];
 		}
 		
-		//不知道是什么东西
+		//参数的梯度下降法
 		for(int d=0;d<exampleDim;d++){
 			grad[d] = Math.abs(lambda*w[d]);	
 			for(int m=0;m<exampleNum;m++){
-				if(Double.parseDouble(datas.get(m).label.toString())*yp[m]-1<0){
+				double ryp = Double.parseDouble(datas.get(m).label.toString());
+				if(ryp*yp[m]-1<0){
 					if(datas.get(m).vector.containsKey(d))
-					grad[d]-= Double.parseDouble(datas.get(m).label.toString())*Double.parseDouble(datas.get(m).vector.get(d).toString());
+					grad[d]-= ryp*Double.parseDouble(datas.get(m).vector.get(d).toString());
 				}
 			}
 		}	
+		update();
 	}
 	
 	/*分类预测*/	
@@ -120,8 +132,8 @@ public class LinearSVM {
 		List<Data> datas = new ArrayList<>();
 		for(String line: fileList)
 			datas.add(new Data(line));
-		LinearSVM svm1 = new LinearSVM(0.0001);
-		svm1.Train(datas, 500);
+		LinearSVM svm1 = new LinearSVM(0.01);
+		svm1.Train(datas, 100);
 
 		file.setFileName("./file/svm.test3.txt");
 		fileList = file.FileRead("utf-8");
